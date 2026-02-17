@@ -6,7 +6,7 @@ A lightweight command-line utility that copies the contents of one or more files
 
 ---
 
-## ✨ Features
+## Features
 
 - **Multi‑file support** – Specify any number of files, in any directories.
 - **Markdown‑friendly output** – Each file is prefixed by its name (with extension) and enclosed in triple backticks, preserving original formatting and indentation.
@@ -17,7 +17,7 @@ A lightweight command-line utility that copies the contents of one or more files
 
 ---
 
-## 📥 Installation
+## Installation
 
 ### 1. Save the script
 
@@ -69,7 +69,7 @@ Now paste somewhere – you should see the formatted output.
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ```bash
 cf [FILE]...
@@ -116,7 +116,7 @@ export const add = (a: number, b: number) => a + b;
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 1. The script accepts any number of file paths.
 2. For each readable file, it outputs:
@@ -130,7 +130,7 @@ export const add = (a: number, b: number) => a + b;
 
 ---
 
-## 🔧 Customisation
+## Customisation
 
 The script is intentionally minimal. You can easily tweak it:
 
@@ -141,7 +141,7 @@ The script is intentionally minimal. You can easily tweak it:
 
 ---
 
-## 📋 Requirements
+## Requirements
 
 - Bash 3.2+
 - One of the following clipboard utilities:
@@ -153,7 +153,7 @@ The script will warn you if a required tool is missing.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to open an issue or pull request for:
 
@@ -165,13 +165,13 @@ Please ensure your changes are backwards‑compatible and well‑documented.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 Inspired by the need to quickly share code with colleagues and LLMs without manual formatting.
 
