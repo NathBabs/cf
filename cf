@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+# cf - Copy multiple files to clipboard in a Markdown-friendly format
+# Usage: cf file1 [file2 ...]
+
+set -euo pipefail
+
+show_help() {
+    cat <<EOF
+Usage: cf FILE...
+
+Copy the contents of one or more files to the clipboard, each prefixed by its
+filename and wrapped in a Markdown code block. Two blank lines separate files.
+
+Examples:
+  cf src/index.js src/utils.ts
+  cf ~/.bashrc ./config.json
+
+Options:
+  -h, --help    Show this help message
+EOF
+}
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            echo "Error: Unknown option $1" >&2
+            show_help
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Need at least one file
+if [ $# -eq 0 ]; then
+    show_help
+    exit 1
+fi
+
+# Detect clipboard command
+clipboard_cmd=""
+case "$(uname -s)" in
+    Linux*)
+        if command -v xclip &>/dev/null; then
+            clipboard_cmd="xclip -selection clipboard"
+        elif command -v xsel &>/dev/null; then
+            clipboard_cmd="xsel --clipboard --input"
+        else
+            echo "Error: No clipboard utility found. Install xclip or xsel." >&2
+            exit 1
+        fi
+        ;;
+    Darwin*)
+        clipboard_cmd="pbcopy"
+        ;;
+    CYGWIN*|MINGW*|MSYS*)
+        if command -v clip &>/dev/null; then
+            clipboard_cmd="clip"
+        else
+            echo "Error: clip command not found (are you on Windows?)." >&2
+            exit 1
+        fi
+        ;;
+    *)
+        echo "Error: Unsupported operating system." >&2
+        exit 1
+        ;;
+esac
+
+# Generate the formatted output, streaming directly to clipboard
+{
+    first=1
+    for file in "$@"; do
+        if [ ! -f "$file" ] || [ ! -r "$file" ]; then
+            echo "Warning: Skipping unreadable file: $file" >&2
+            continue
+        fi
+
+        # Separate files with two blank lines (except before the first)
+        if [ $first -eq 0 ]; then
+            echo
+            echo
+        fi
+        first=0
+
+        # Filename (just the basename; change to "$file" if you want the path)
+        basename "$file"
+        # Opening code fence
+        echo '```'
+        # File contents
+        cat "$file"
+        # Closing code fence
+        echo '```'
+    done
+} | eval "$clipboard_cmd"
+
+if [ $? -eq 0 ]; then
+    echo "✓ Contents copied to clipboard." >&2
+else
+    echo "Error: Failed to copy to clipboard." >&2
+    exit 1
+fi
