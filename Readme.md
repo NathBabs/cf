@@ -25,7 +25,7 @@ Create a file named `cf` (no extension) and copy [the script](cf) into it.
 You can do this from the terminal:
 
 ```bash
-curl -o cf https://raw.githubusercontent.com/yourusername/yourrepo/main/cf
+curl -o cf https://raw.githubusercontent.com/NathBabs/cf/main/cf
 # or manually with nano/vim
 ```
 
